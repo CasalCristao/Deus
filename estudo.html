@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Cores baseadas em tons espirituais (Azul, Branco, Dourado) */
+        /* Cores baseadas em tons espirituais (Azul Noturno, Branco, Dourado) */
         :root {
             --primary-bg: #f8fafc;
             --text-main: #1e293b;
@@ -38,13 +38,14 @@
         
         .bible-quote {
             font-family: 'Cinzel', serif;
-            font-size: 1.25rem;
+            font-size: 1.35rem; /* Aumentei a fonte */
             color: #334155;
             background: #f1f5f9;
-            padding: 1.5rem;
+            padding: 2rem;
             border-left: 4px solid var(--accent);
-            margin: 1.5rem 0;
+            margin: 2rem 0;
             font-style: italic;
+            line-height: 1.6;
         }
         
         .nav-button {
@@ -53,15 +54,15 @@
             padding: 0.8rem 1.5rem;
             border-radius: 0.5rem;
             transition: 0.3s;
+            font-weight: 600;
         }
         .nav-button:hover:not(:disabled) { background-color: var(--accent); transform: translateY(-2px); }
         .nav-button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* Estilo para dias bloqueados */
-        .locked-msg {
-            text-align: center;
-            padding: 3rem;
-            color: #64748b;
+        .text-justified {
+            text-align: justify;
+            line-height: 1.8;
+            font-size: 1.1rem;
         }
     </style>
 </head>
@@ -69,91 +70,104 @@
 
     <div class="content-card" id="main-card">
         <div id="study-content">
-            <div class="text-center mb-8">
-                <span id="day-indicator" class="text-xs font-bold tracking-widest text-amber-600 uppercase">Dia 1</span>
-                <h1 id="theme-title" class="header-font text-3xl md:text-4xl font-bold mt-2 text-slate-800">Tema do Dia</h1>
+            <div class="text-center mb-10">
+                <span id="day-indicator" class="text-xs font-bold tracking-widest text-amber-600 uppercase border border-amber-600 px-3 py-1 rounded-full">Dia 1</span>
+                <h1 id="theme-title" class="header-font text-3xl md:text-5xl font-bold mt-4 text-slate-800">Tema do Dia</h1>
             </div>
 
             <div id="bible-quote-container" class="bible-quote">
                 <p id="verse-text">"Texto bíblico vai aqui..."</p>
-                <span id="verse-ref" class="block text-right text-sm font-bold mt-2 text-amber-600">- Referência</span>
+                <span id="verse-ref" class="block text-right text-sm font-bold mt-4 text-amber-600 tracking-wide">- Referência</span>
             </div>
 
-            <div class="prose max-w-none text-slate-600 leading-relaxed mb-8">
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Reflexão</h3>
-                <div id="explanation-text">Texto da explicação...</div>
+            <div class="prose max-w-none text-slate-700 mb-10">
+                <h3 class="header-font text-2xl font-bold text-slate-800 mb-4 border-b pb-2">Reflexão Profunda</h3>
+                <div id="explanation-text" class="text-justified">Texto da explicação...</div>
             </div>
 
-            <div class="bg-slate-50 p-6 rounded-lg border border-slate-100 mb-8">
-                <h3 class="text-lg font-bold text-slate-700 mb-2 flex items-center">
-                    🙏 Momento de Oração
+            <div class="bg-slate-50 p-8 rounded-xl border border-slate-200 mb-10 shadow-inner">
+                <h3 class="header-font text-xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    🙏 Oração da Manhã
                 </h3>
-                <p id="prayer-text" class="italic text-slate-600">Oração do dia...</p>
+                <p id="prayer-text" class="italic text-slate-600 text-lg leading-relaxed">Oração do dia...</p>
             </div>
 
             <div class="mb-8">
-                <h3 class="text-lg font-bold text-slate-700 mb-4">Desafio Prático</h3>
-                <ul id="tips-list" class="space-y-3"></ul>
+                <h3 class="header-font text-xl font-bold text-slate-700 mb-4">Prática Espiritual</h3>
+                <ul id="tips-list" class="space-y-4"></ul>
             </div>
-
-            <div id="video-container" class="hidden rounded-lg overflow-hidden shadow-lg mt-6">
-                <iframe id="video-frame" class="w-full h-64 md:h-80" src="" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-
-        <div id="locked-content" class="hidden locked-msg">
-            <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-            </svg>
-            <h2 class="text-2xl font-bold text-slate-400">Dia Bloqueado</h2>
-            <p class="mt-2">Complete os dias anteriores para avançar na sua jornada.</p>
         </div>
     </div>
 
-    <div class="flex gap-4 mb-12">
+    <div class="flex flex-wrap justify-center gap-4 mb-12">
         <button id="prev-btn" class="nav-button">Anterior</button>
-        <button id="next-btn" class="nav-button">Próximo</button>
         <a href="index.html" class="nav-button bg-slate-200 text-slate-700 hover:bg-slate-300">Voltar ao Menu</a>
+        <button id="next-btn" class="nav-button">Próximo</button>
     </div>
 
     <script>
-        const TOTAL_DIAS = 30; // Total agora é 30
-        let maxUnlockedDay = parseInt(localStorage.getItem('maxUnlockedDay_30dias')) || 1; // Nova chave para não misturar com o outro site
+        const TOTAL_DIAS = 30; 
 
         // =========================================================================
-        // BANCO DE DADOS DOS 30 DIAS
-        // Edite abaixo para adicionar os dias de 4 a 30
+        // BANCO DE DADOS (SEM LINKS, FOCADO NA LEITURA)
         // =========================================================================
         const bibleStudyData = [
             {
                 dayNumber: 1,
-                theme: "O Convite ao Silêncio 🤫",
-                verseQuote: "Aquietai-vos, e sabei que eu sou Deus.",
-                verseReference: "Salmos 46:10",
-                briefExplanation: `Em um mundo barulhento, a voz de Deus muitas vezes é um sussurro suave. Para nos aproximarmos dEle nesses 30 dias, o primeiro passo é 'baixar o volume' do mundo. <br><br>Deus não compete com os ruídos do nosso dia a dia; Ele espera que paremos para ouvi-Lo. Hoje, o convite é para parar de correr e simplesmente 'estar' na presença dEle.`,
-                prayer: "Senhor, cala o barulho da minha mente e do meu coração. Quero começar essa jornada aprendendo a Te ouvir. Me ensina a quietude. Amém.",
-                tips: ["Fique 5 minutos hoje em total silêncio, sem celular.", "Leia o Salmo 46 completo antes de dormir."],
-                videoUrl: "https://www.youtube.com/watch?v=VIDEO_ID_AQUI" 
+                theme: "A Primícia do Silêncio",
+                verseQuote: "De manhã ouves, Senhor, a minha voz; de manhã te apresento a minha oração e fico esperando.",
+                verseReference: "Salmos 5:3",
+                briefExplanation: `
+                    <p>Ao acordar, antes que o mundo exija sua atenção, existe um convite sagrado. O silêncio da manhã não é apenas ausência de barulho; é a acústica perfeita para ouvir a Deus.</p>
+                    <br>
+                    <p>Muitas vezes, já acordamos atrasados, checando notificações, permitindo que as demandas externas ditem o ritmo da nossa alma. Mas o salmista Davi nos ensina um segredo de poder espiritual: <strong>a primícia</strong>. Entregar os primeiros minutos do dia a Deus é declarar que Ele é mais importante do que qualquer urgência.</p>
+                    <br>
+                    <p>Neste primeiro dia, o chamado não é para fazer muito, mas para "ser". É aquietar a ansiedade do que precisa ser resolvido e lembrar de Quem sustenta o universo. Quando você apresenta sua voz a Deus pela manhã e "fica esperando", você alinha seu espírito para enfrentar qualquer batalha. O silêncio diante dEle é a armadura mais forte que você pode vestir hoje.</p>
+                    <br>
+                    <p>Não busque sentir arrepios ou grandes revelações agora. Apenas esteja lá. A fidelidade da sua presença move o coração do Pai.</p>
+                `,
+                prayer: "Pai Amado, aqui estou. Antes de falar com qualquer pessoa, escolho falar Contigo. Silencia o barulho da minha mente, as preocupações com a agenda e a pressa. Eu Te entrego as primícias deste dia. Que a Tua voz seja a mais alta em meu coração hoje. Ensina-me a esperar em Ti com confiança. Em nome de Jesus, Amém.",
+                tips: [
+                    "Não toque no celular nos primeiros 15 minutos após acordar amanhã.",
+                    "Sente-se em um lugar tranquilo, feche os olhos e repita a oração acima em voz alta, devagar.",
+                    "Leia o Salmo 5 completo na sua Bíblia."
+                ]
             },
             {
                 dayNumber: 2,
-                theme: "Sondando o Coração ❤️",
+                theme: "Sondando o Coração",
                 verseQuote: "Sonda-me, ó Deus, e conhece o meu coração; prova-me, e conhece os meus pensamentos.",
                 verseReference: "Salmos 139:23",
-                briefExplanation: `Não podemos nos aproximar de Deus usando máscaras. Ele já sabe quem somos, mas Ele quer que NÓS saibamos. <br><br>A intimidade exige transparência. Hoje é dia de abrir as gavetas trancadas da alma e convidar o Espírito Santo para fazer uma limpeza. Não tenha medo do que Ele vai encontrar; Ele limpa com amor, não com condenação.`,
-                prayer: "Pai, eu me abro diante de Ti. Não quero esconder nada. Revela onde preciso mudar e cura as feridas que eu tento esconder. Amém.",
-                tips: ["Escreva em um papel um sentimento que você tem escondido e ore sobre ele.", "Peça perdão por algo específico que o Espírito te lembrar."],
-                videoUrl: "" 
+                briefExplanation: `
+                    <p>Não podemos caminhar profundamente com Deus usando máscaras. Ele já sabe quem somos, mas a intimidade acontece quando NÓS temos a coragem de nos expor voluntariamente a Ele.</p>
+                    <br>
+                    <p>Sondar o coração é como abrir as gavetas bagunçadas da alma. É convidar o Espírito Santo para iluminar áreas de orgulho, mágoa ou medo que tentamos esconder. Não tenha medo do que Ele vai encontrar; Deus revela para curar, nunca para condenar.</p>
+                    <br>
+                    <p>Hoje é dia de transparência. Não ore frases feitas. Fale a verdade crua sobre como você se sente.</p>
+                `,
+                prayer: "Senhor, eu me abro totalmente diante de Ti. Não quero esconder nada. Revela onde preciso mudar, onde estou ferido e onde preciso do Teu perdão. Limpa o meu interior e renova um espírito reto dentro de mim. Amém.",
+                tips: [
+                    "Escreva em um papel um sentimento difícil que você tem guardado e apresente a Deus.",
+                    "Peça ao Espírito Santo que traga à memória se há alguém que você precisa perdoar hoje."
+                ]
             },
             {
                 dayNumber: 3,
-                theme: "A Prioridade do Reino 👑",
+                theme: "A Ordem do Reino",
                 verseQuote: "Mas buscai primeiro o Reino de Deus, e a sua justiça, e todas estas coisas vos serão acrescentadas.",
                 verseReference: "Mateus 6:33",
-                briefExplanation: `Muitas vezes nos afastamos de Deus porque estamos ocupados demais buscando "as coisas" (trabalho, dinheiro, status). <br><br>A promessa é clara: quando Deus se torna o centro, o resto entra em equilíbrio. Aproximar-se dEle é realinhar as prioridades. O que tem ocupado o trono do seu tempo?`,
-                prayer: "Senhor, perdoa-me por colocar outras coisas antes de Ti. Hoje eu recoloco o Teu Reino no centro da minha vida. Seja o Rei do meu tempo. Amém.",
-                tips: ["Analise sua agenda: onde Deus entra no seu dia?", "Comece o dia amanhã com oração antes de pegar no celular."],
-                videoUrl: "" 
+                briefExplanation: `
+                    <p>A ansiedade muitas vezes nasce da desordem. Quando colocamos "as coisas" (trabalho, dinheiro, futuro) no trono da nossa vida, o peso se torna insuportável.</p>
+                    <br>
+                    <p>O princípio do Reino é a inversão dessa lógica humana. Jesus nos garante: quando Deus é o centro, o resto entra em órbita. Buscar o Reino primeiro significa consultar a Deus antes de tomar decisões, priorizar o que é eterno e confiar que Ele é o Provedor.</p>
+                    <br>
+                    <p>Aproximar-se de Deus é realinhar as prioridades. O que tem ocupado o primeiro lugar nos seus pensamentos?</p>
+                `,
+                prayer: "Senhor, perdoa-me pelas vezes em que busquei as bênçãos mais do que o Abençoador. Hoje, eu recoloco o Teu Reino no centro da minha vida. Que as minhas decisões reflitam que Tu és o meu Rei. Eu confio no Teu cuidado sobre o meu futuro. Amém.",
+                tips: [
+                    "Antes de começar seu trabalho ou estudo hoje, pare e consagre suas atividades a Deus.",
+                    "Identifique uma preocupação que está tirando sua paz e diga em voz alta: 'Deus cuida disso para mim, eu buscarei o Seu Reino'."
+                ]
             },
             // ======================================================
             // MODELO PARA VOCÊ COPIAR (DOS DIAS 4 AO 30)
@@ -161,106 +175,12 @@
             // ======================================================
             {
                 dayNumber: 4,
-                theme: "Tema do Dia 4 Aqui",
-                verseQuote: "Versículo do dia aqui...",
+                theme: "Título do Tema Aqui",
+                verseQuote: "Versículo aqui...",
                 verseReference: "Livro X:Y",
-                briefExplanation: "Escreva a reflexão aqui...",
-                prayer: "Escreva a oração aqui...",
-                tips: ["Dica prática 1", "Dica prática 2"],
-                videoUrl: "" 
-            },
-            // Repita esse bloco acima para o dia 5, 6, até 30...
-        ];
-
-        // Lógica do Site (Não precisa mexer muito aqui)
-        const urlParams = new URLSearchParams(window.location.search);
-        let currentDay = parseInt(urlParams.get('tema')) || 1;
-
-        function loadDay(dayIndex) {
-            // Ajusta índice (array começa em 0)
-            const data = bibleStudyData[dayIndex - 1]; 
-
-            if (!data) {
-                // Se não tiver dados para esse dia ainda (ex: dia 30 vazio)
-                document.getElementById('study-content').innerHTML = "<br><h2 class='text-center text-xl'>Conteúdo em desenvolvimento...</h2>";
-                return;
-            }
-
-            // Verifica bloqueio
-            if (dayIndex > maxUnlockedDay) {
-                document.getElementById('study-content').classList.add('hidden');
-                document.getElementById('locked-content').classList.remove('hidden');
-                document.getElementById('next-btn').style.display = 'none';
-                return;
-            } else {
-                document.getElementById('study-content').classList.remove('hidden');
-                document.getElementById('locked-content').classList.add('hidden');
-            }
-
-            // Preenche os textos
-            document.getElementById('day-indicator').innerText = `DIA ${data.dayNumber}`;
-            document.getElementById('theme-title').innerText = data.theme;
-            document.getElementById('verse-text').innerText = `"${data.verseQuote}"`;
-            document.getElementById('verse-ref').innerText = data.verseReference;
-            document.getElementById('explanation-text').innerHTML = data.briefExplanation;
-            document.getElementById('prayer-text').innerText = data.prayer;
-
-            // Lista de Dicas
-            const tipsList = document.getElementById('tips-list');
-            tipsList.innerHTML = '';
-            data.tips.forEach(tip => {
-                const li = document.createElement('li');
-                li.className = "flex items-start bg-white p-3 rounded shadow-sm border border-slate-100";
-                li.innerHTML = `<span class="text-amber-500 mr-2">➤</span> ${tip}`;
-                tipsList.appendChild(li);
-            });
-
-            // Vídeo (Opcional)
-            const videoContainer = document.getElementById('video-container');
-            if (data.videoUrl && data.videoUrl.trim() !== "") {
-                try {
-                    let videoId = "";
-                    if(data.videoUrl.includes("v=")) videoId = data.videoUrl.split('v=')[1].split('&')[0];
-                    else if(data.videoUrl.includes("youtu.be")) videoId = data.videoUrl.split('/').pop();
-                    
-                    if(videoId) {
-                        document.getElementById('video-frame').src = `https://www.youtube.com/embed/${videoId}`;
-                        videoContainer.classList.remove('hidden');
-                    } else {
-                        videoContainer.classList.add('hidden');
-                    }
-                } catch(e) { videoContainer.classList.add('hidden'); }
-            } else {
-                videoContainer.classList.add('hidden');
-            }
-
-            // Botões
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            
-            prevBtn.disabled = (dayIndex === 1);
-            prevBtn.onclick = () => window.location.href = `estudo.html?tema=${dayIndex - 1}`;
-            
-            if (dayIndex >= TOTAL_DIAS) {
-                nextBtn.innerText = "Concluir";
-                nextBtn.onclick = () => alert("Parabéns! Você completou os 30 dias!");
-            } else {
-                nextBtn.innerText = "Próximo Dia";
-                nextBtn.disabled = (dayIndex >= maxUnlockedDay);
-                nextBtn.onclick = () => {
-                    // Desbloqueia o próximo dia
-                    if (dayIndex === maxUnlockedDay) {
-                        maxUnlockedDay++;
-                        localStorage.setItem('maxUnlockedDay_30dias', maxUnlockedDay);
-                    }
-                    window.location.href = `estudo.html?tema=${dayIndex + 1}`;
-                };
-            }
-        }
-
-        // Carrega o dia ao abrir
-        loadDay(currentDay);
-
-    </script>
-</body>
-</html>
+                briefExplanation: `
+                    <p>Escreva aqui o texto profundo do dia...</p>
+                    <br>
+                    <p>Pode usar mais parágrafos assim.</p>
+                `,
+                prayer: "Es
