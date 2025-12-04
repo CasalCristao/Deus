@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Devocional Diário</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Cores baseadas em tons espirituais (Azul, Branco, Dourado) */
+        :root {
+            --primary-bg: #f8fafc;
+            --text-main: #1e293b;
+            --accent: #d97706; /* Dourado */
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2e8f0;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header-font { font-family: 'Cinzel', serif; }
+        
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 90%;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-top: 5px solid var(--accent);
+        }
+        
+        .bible-quote {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            color: #334155;
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-left: 4px solid var(--accent);
+            margin: 1.5rem 0;
+            font-style: italic;
+        }
+        
+        .nav-button {
+            background-color: #334155;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: 0.3s;
+        }
+        .nav-button:hover:not(:disabled) { background-color: var(--accent); transform: translateY(-2px); }
+        .nav-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Estilo para dias bloqueados */
+        .locked-msg {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content-card" id="main-card">
+        <div id="study-content">
+            <div class="text-center mb-8">
+                <span id="day-indicator" class="text-xs font-bold tracking-widest text-amber-600 uppercase">Dia 1</span>
+                <h1 id="theme-title" class="header-font text-3xl md:text-4xl font-bold mt-2 text-slate-800">Tema do Dia</h1>
+            </div>
+
+            <div id="bible-quote-container" class="bible-quote">
+                <p id="verse-text">"Texto bíblico vai aqui..."</p>
+                <span id="verse-ref" class="block text-right text-sm font-bold mt-2 text-amber-600">- Referência</span>
+            </div>
+
+            <div class="prose max-w-none text-slate-600 leading-relaxed mb-8">
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Reflexão</h3>
+                <div id="explanation-text">Texto da explicação...</div>
+            </div>
+
+            <div class="bg-slate-50 p-6 rounded-lg border border-slate-100 mb-8">
+                <h3 class="text-lg font-bold text-slate-700 mb-2 flex items-center">
+                    🙏 Momento de Oração
+                </h3>
+                <p id="prayer-text" class="italic text-slate-600">Oração do dia...</p>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg font-bold text-slate-700 mb-4">Desafio Prático</h3>
+                <ul id="tips-list" class="space-y-3"></ul>
+            </div>
+
+            <div id="video-container" class="hidden rounded-lg overflow-hidden shadow-lg mt-6">
+                <iframe id="video-frame" class="w-full h-64 md:h-80" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div id="locked-content" class="hidden locked-msg">
+            <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+            <h2 class="text-2xl font-bold text-slate-400">Dia Bloqueado</h2>
+            <p class="mt-2">Complete os dias anteriores para avançar na sua jornada.</p>
+        </div>
+    </div>
+
+    <div class="flex gap-4 mb-12">
+        <button id="prev-btn" class="nav-button">Anterior</button>
+        <button id="next-btn" class="nav-button">Próximo</button>
+        <a href="index.html" class="nav-button bg-slate-200 text-slate-700 hover:bg-slate-300">Voltar ao Menu</a>
+    </div>
+
+    <script>
+        const TOTAL_DIAS = 30; // Total agora é 30
+        let maxUnlockedDay = parseInt(localStorage.getItem('maxUnlockedDay_30dias')) || 1; // Nova chave para não misturar com o outro site
+
+        // =========================================================================
+        // BANCO DE DADOS DOS 30 DIAS
+        // Edite abaixo para adicionar os dias de 4 a 30
+        // =========================================================================
+        const bibleStudyData = [
+            {
+                dayNumber: 1,
+                theme: "O Convite ao Silêncio 🤫",
+                verseQuote: "Aquietai-vos, e sabei que eu sou Deus.",
+                verseReference: "Salmos 46:10",
+                briefExplanation: `Em um mundo barulhento, a voz de Deus muitas vezes é um sussurro suave. Para nos aproximarmos dEle nesses 30 dias, o primeiro passo é 'baixar o volume' do mundo. <br><br>Deus não compete com os ruídos do nosso dia a dia; Ele espera que paremos para ouvi-Lo. Hoje, o convite é para parar de correr e simplesmente 'estar' na presença dEle.`,
+                prayer: "Senhor, cala o barulho da minha mente e do meu coração. Quero começar essa jornada aprendendo a Te ouvir. Me ensina a quietude. Amém.",
+                tips: ["Fique 5 minutos hoje em total silêncio, sem celular.", "Leia o Salmo 46 completo antes de dormir."],
+                videoUrl: "https://www.youtube.com/watch?v=VIDEO_ID_AQUI" 
+            },
+            {
+                dayNumber: 2,
+                theme: "Sondando o Coração ❤️",
+                verseQuote: "Sonda-me, ó Deus, e conhece o meu coração; prova-me, e conhece os meus pensamentos.",
+                verseReference: "Salmos 139:23",
+                briefExplanation: `Não podemos nos aproximar de Deus usando máscaras. Ele já sabe quem somos, mas Ele quer que NÓS saibamos. <br><br>A intimidade exige transparência. Hoje é dia de abrir as gavetas trancadas da alma e convidar o Espírito Santo para fazer uma limpeza. Não tenha medo do que Ele vai encontrar; Ele limpa com amor, não com condenação.`,
+                prayer: "Pai, eu me abro diante de Ti. Não quero esconder nada. Revela onde preciso mudar e cura as feridas que eu tento esconder. Amém.",
+                tips: ["Escreva em um papel um sentimento que você tem escondido e ore sobre ele.", "Peça perdão por algo específico que o Espírito te lembrar."],
+                videoUrl: "" 
+            },
+            {
+                dayNumber: 3,
+                theme: "A Prioridade do Reino 👑",
+                verseQuote: "Mas buscai primeiro o Reino de Deus, e a sua justiça, e todas estas coisas vos serão acrescentadas.",
+                verseReference: "Mateus 6:33",
+                briefExplanation: `Muitas vezes nos afastamos de Deus porque estamos ocupados demais buscando "as coisas" (trabalho, dinheiro, status). <br><br>A promessa é clara: quando Deus se torna o centro, o resto entra em equilíbrio. Aproximar-se dEle é realinhar as prioridades. O que tem ocupado o trono do seu tempo?`,
+                prayer: "Senhor, perdoa-me por colocar outras coisas antes de Ti. Hoje eu recoloco o Teu Reino no centro da minha vida. Seja o Rei do meu tempo. Amém.",
+                tips: ["Analise sua agenda: onde Deus entra no seu dia?", "Comece o dia amanhã com oração antes de pegar no celular."],
+                videoUrl: "" 
+            },
+            // ======================================================
+            // MODELO PARA VOCÊ COPIAR (DOS DIAS 4 AO 30)
+            // Copie o bloco abaixo, cole e mude os textos
+            // ======================================================
+            {
+                dayNumber: 4,
+                theme: "Tema do Dia 4 Aqui",
+                verseQuote: "Versículo do dia aqui...",
+                verseReference: "Livro X:Y",
+                briefExplanation: "Escreva a reflexão aqui...",
+                prayer: "Escreva a oração aqui...",
+                tips: ["Dica prática 1", "Dica prática 2"],
+                videoUrl: "" 
+            },
+            // Repita esse bloco acima para o dia 5, 6, até 30...
+        ];
+
+        // Lógica do Site (Não precisa mexer muito aqui)
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentDay = parseInt(urlParams.get('tema')) || 1;
+
+        function loadDay(dayIndex) {
+            // Ajusta índice (array começa em 0)
+            const data = bibleStudyData[dayIndex - 1]; 
+
+            if (!data) {
+                // Se não tiver dados para esse dia ainda (ex: dia 30 vazio)
+                document.getElementById('study-content').innerHTML = "<br><h2 class='text-center text-xl'>Conteúdo em desenvolvimento...</h2>";
+                return;
+            }
+
+            // Verifica bloqueio
+            if (dayIndex > maxUnlockedDay) {
+                document.getElementById('study-content').classList.add('hidden');
+                document.getElementById('locked-content').classList.remove('hidden');
+                document.getElementById('next-btn').style.display = 'none';
+                return;
+            } else {
+                document.getElementById('study-content').classList.remove('hidden');
+                document.getElementById('locked-content').classList.add('hidden');
+            }
+
+            // Preenche os textos
+            document.getElementById('day-indicator').innerText = `DIA ${data.dayNumber}`;
+            document.getElementById('theme-title').innerText = data.theme;
+            document.getElementById('verse-text').innerText = `"${data.verseQuote}"`;
+            document.getElementById('verse-ref').innerText = data.verseReference;
+            document.getElementById('explanation-text').innerHTML = data.briefExplanation;
+            document.getElementById('prayer-text').innerText = data.prayer;
+
+            // Lista de Dicas
+            const tipsList = document.getElementById('tips-list');
+            tipsList.innerHTML = '';
+            data.tips.forEach(tip => {
+                const li = document.createElement('li');
+                li.className = "flex items-start bg-white p-3 rounded shadow-sm border border-slate-100";
+                li.innerHTML = `<span class="text-amber-500 mr-2">➤</span> ${tip}`;
+                tipsList.appendChild(li);
+            });
+
+            // Vídeo (Opcional)
+            const videoContainer = document.getElementById('video-container');
+            if (data.videoUrl && data.videoUrl.trim() !== "") {
+                try {
+                    let videoId = "";
+                    if(data.videoUrl.includes("v=")) videoId = data.videoUrl.split('v=')[1].split('&')[0];
+                    else if(data.videoUrl.includes("youtu.be")) videoId = data.videoUrl.split('/').pop();
+                    
+                    if(videoId) {
+                        document.getElementById('video-frame').src = `https://www.youtube.com/embed/${videoId}`;
+                        videoContainer.classList.remove('hidden');
+                    } else {
+                        videoContainer.classList.add('hidden');
+                    }
+                } catch(e) { videoContainer.classList.add('hidden'); }
+            } else {
+                videoContainer.classList.add('hidden');
+            }
+
+            // Botões
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = (dayIndex === 1);
+            prevBtn.onclick = () => window.location.href = `estudo.html?tema=${dayIndex - 1}`;
+            
+            if (dayIndex >= TOTAL_DIAS) {
+                nextBtn.innerText = "Concluir";
+                nextBtn.onclick = () => alert("Parabéns! Você completou os 30 dias!");
+            } else {
+                nextBtn.innerText = "Próximo Dia";
+                nextBtn.disabled = (dayIndex >= maxUnlockedDay);
+                nextBtn.onclick = () => {
+                    // Desbloqueia o próximo dia
+                    if (dayIndex === maxUnlockedDay) {
+                        maxUnlockedDay++;
+                        localStorage.setItem('maxUnlockedDay_30dias', maxUnlockedDay);
+                    }
+                    window.location.href = `estudo.html?tema=${dayIndex + 1}`;
+                };
+            }
+        }
+
+        // Carrega o dia ao abrir
+        loadDay(currentDay);
+
+    </script>
+</body>
+</html>
